@@ -1,20 +1,19 @@
 import {
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
   Column,
   Entity,
-  CreateDateColumn,
-  PrimaryGeneratedColumn,
+  Index,
 } from 'typeorm';
 
-@Entity('orders')
-export class OrderEntity {
+@Entity('mutexes')
+export class MutexEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  position_id: number;
-
-  @Column()
-  user_id: number;
+  @Index('request_id', { unique: true })
+  request_id: number;
 
   @CreateDateColumn({
     type: 'timestamp',

@@ -1,7 +1,5 @@
 export class MakeOrderDto {
-  order_id: string;
-
-  email: string;
+  position_id: string;
 
   user_id: number;
 }

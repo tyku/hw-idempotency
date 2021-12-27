@@ -11,17 +11,17 @@ export class OrderServiceService {
   ) {}
 
   async create(data: Record<string, any>) {
-    const { name, price } = data;
+    const { position_id, user_id } = data;
 
     const result = await this.orderRepo
       .createQueryBuilder()
       .insert()
       .into('orders')
       .values({
-        name,
-        price,
+        position_id,
+        user_id,
       })
-      .returning('id, name, price')
+      .returning('id')
       .execute();
 
     const { raw = [] } = result;
