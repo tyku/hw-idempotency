@@ -8,8 +8,8 @@ import { OrderServiceService } from './order-service.service';
 import { MutexService } from './mutex.service';
 
 @Module({
-  // imports: [TypeOrmModule.forFeature([OrderEntity, MutexEntity])],
+  imports: [TypeOrmModule.forFeature([OrderEntity, MutexEntity])],
   controllers: [OrderServiceController],
-  // providers: [OrderServiceService, MutexService],
+  providers: [OrderServiceService, MutexService],
 })
 export class OrderServiceModule {}

@@ -10,12 +10,12 @@ import { OrderServiceModule } from '@app/order-service/order/order-service.modul
       isGlobal: true,
       load: [database, common],
     }),
-    // TypeOrmModule.forRootAsync({
-    //   imports: [ConfigModule],
-    //   useFactory: (configService: ConfigService) =>
-    //     configService.get<object>('database'),
-    //   inject: [ConfigService],
-    // }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) =>
+        configService.get<object>('database'),
+      inject: [ConfigService],
+    }),
     OrderServiceModule,
   ],
   controllers: [],
