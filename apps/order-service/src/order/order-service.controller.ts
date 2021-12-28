@@ -2,23 +2,15 @@ import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { MakeOrderDto } from '@app/order-service/dto';
 
 import { OrderServiceService } from './order-service.service';
-import { MutexService } from '@app/order-service/order/mutex.service';
 
 @Controller('/v1/order')
 export class OrderServiceController {
-  constructor(
-    private readonly orderServiceService: OrderServiceService,
-    private readonly mutexService: MutexService,
-  ) {}
+  constructor(private readonly orderServiceService: OrderServiceService) {
+  }
 
   @Get()
   list() {
     return this.orderServiceService.list();
-  }
-
-  @Get(':id')
-  retrieve(@Param('id') id: string) {
-    return this.orderServiceService.retrieve(id);
   }
 
   @Post('make')
@@ -26,15 +18,28 @@ export class OrderServiceController {
     const { position_id, user_id } = data;
 
     const headers = req.headers;
-    const requestId = headers['x-request-id'];
+    const request_id = headers['request-id'];
 
-    if (!requestId) {
+    if (!request_id) {
       throw new Error('Missing request id');
     }
 
-    await this.mutexService.create({ request_id: requestId });
-    await this.orderServiceService.create({ position_id, user_id });
+    try {
+      const { id: orderId } = await this.orderServiceService.create({
+        position_id,
+        user_id,
+        request_id,
+      });
 
-    return { text: 'Заявка создана' };
+      return { text: 'Заявка создана', orderId };
+    } catch (e) {
+      const { id } = await this.orderServiceService.retrieve(
+        user_id,
+        position_id,
+        request_id,
+      );
+
+      return { text: 'Заявка создана', orderId: id };
+    }
   }
 }

@@ -16,6 +16,9 @@ export class OrderEntity {
   @Column()
   user_id: number;
 
+  @Column()
+  request_id: string;
+
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',

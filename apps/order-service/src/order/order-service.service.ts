@@ -11,7 +11,7 @@ export class OrderServiceService {
   ) {}
 
   async create(data: Record<string, any>) {
-    const { position_id, user_id } = data;
+    const { position_id, user_id, request_id } = data;
 
     const result = await this.orderRepo
       .createQueryBuilder()
@@ -20,6 +20,7 @@ export class OrderServiceService {
       .values({
         position_id,
         user_id,
+        request_id,
       })
       .returning('id')
       .execute();
@@ -34,11 +35,11 @@ export class OrderServiceService {
     return this.orderRepo.createQueryBuilder().select(['*']).execute();
   }
 
-  async retrieve(id) {
+  async retrieve(user_id, position_id, request_id: string) {
     const result = await this.orderRepo
       .createQueryBuilder()
       .select(['*'])
-      .where(`id=${id}`)
+      .where('request_id like :id', { id: `%${request_id}%` })
       .execute();
 
     const [response = {}] = result;
