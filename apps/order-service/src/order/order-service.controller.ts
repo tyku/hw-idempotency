@@ -24,6 +24,7 @@ export class OrderServiceController {
   @Post('make')
   async makeOrder(@Body() data: MakeOrderDto, @Req() req: Request) {
     const { position_id, user_id } = data;
+
     const headers = req.headers;
     const requestId = headers['x-request-id'];
 

@@ -1,5 +1,5 @@
 export default () => ({
   server: {
-    port: 9000,
+    port: process.env.PORT,
   },
 });

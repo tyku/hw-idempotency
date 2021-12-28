@@ -13,7 +13,7 @@ export class MutexEntity {
 
   @Column()
   @Index('request_id', { unique: true })
-  request_id: number;
+  request_id: string;
 
   @CreateDateColumn({
     type: 'timestamp',
